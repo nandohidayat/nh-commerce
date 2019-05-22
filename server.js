@@ -1,15 +1,18 @@
 const express = require('express');
 const { json, urlencoded } = require('body-parser');
 const morgan = require('morgan');
-// const config = require('./config');
 const cors = require('cors');
+const config = require('./config');
 // const { signup, signin, protect } = require('./utils/auth');
 const { connect } = require('./utils/db');
 // const userRouter = require('./resources/user/user.router');
 // const itemRouter = require('./resources/item/item.router');
 // const listRouter = require('./resources/list/list.router');
 
-export const app = express();
+require('dotenv').config();
+
+const app = express();
+exports.app = app;
 
 app.disable('x-powered-by');
 
@@ -26,7 +29,7 @@ app.use(morgan('dev'));
 // app.use('/api/item', itemRouter);
 // app.use('/api/list', listRouter);
 
-export const start = async () => {
+exports.start = async () => {
   try {
     await connect();
     app.listen(config.port, () => {

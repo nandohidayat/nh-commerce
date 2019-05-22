@@ -1,4 +1,6 @@
-import { merge } from 'lodash';
+const { merge } = require('lodash');
+
+require('dotenv').config({ path: '.env' });
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -22,13 +24,9 @@ switch (env) {
     envConfig = require('./dev').config;
     break;
   case 'test':
-  case 'testing':
-    // eslint-disable-next-line global-require
-    envConfig = require('./testing').config;
-    break;
   default:
     // eslint-disable-next-line global-require
     envConfig = require('./dev').config;
 }
 
-export default merge(baseConfig, envConfig);
+module.exports = merge(baseConfig, envConfig);

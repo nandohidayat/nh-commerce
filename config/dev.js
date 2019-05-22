@@ -5,4 +5,4 @@ const config = {
   dbUrl: process.env.DATABASE
 };
 
-export default config;
+module.exports = config;
