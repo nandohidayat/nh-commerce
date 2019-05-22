@@ -9,8 +9,6 @@ const { connect } = require('./utils/db');
 // const itemRouter = require('./resources/item/item.router');
 // const listRouter = require('./resources/list/list.router');
 
-require('dotenv').config();
-
 const app = express();
 exports.app = app;
 
