@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import passportLocalMongoose from 'passport-local-mongoose';
+const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.Promise = global.Promise;
 
@@ -36,6 +36,4 @@ const userSchema = new mongoose.Schema(
 
 userSchema.plugin(passportLocalMongoose);
 
-const User = mongoose.model('User', userSchema);
-
-export default User;
+module.exports = mongoose.model('User', userSchema);
