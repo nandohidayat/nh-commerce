@@ -13,7 +13,6 @@ const { connect } = require('./utils/db');
 require('./utils/passport');
 
 const app = express();
-exports.app = app;
 
 app.disable('x-powered-by');
 
