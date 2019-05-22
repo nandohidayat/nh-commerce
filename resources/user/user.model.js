@@ -1,22 +1,21 @@
-import mongoose from 'mongoose'
-import passportLocalMongoose from 'passport-local-mongoose'
-import beautifyUnique from 'mongoose-beautiful-unique-validation'
+import mongoose from 'mongoose';
+import passportLocalMongoose from 'passport-local-mongoose';
 
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
 const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
       require: true,
-      unique: 'email {VALUE} already exist',
+      unique: true,
       trim: true,
       lowercase: true
     },
     username: {
       type: String,
       require: true,
-      unique: 'username {VALUE} already exist',
+      unique: true,
       trim: true
     },
     name: {
@@ -33,11 +32,10 @@ const userSchema = new mongoose.Schema(
     }
   },
   { timestamps: true }
-)
+);
 
-userSchema.plugin(passportLocalMongoose)
-userSchema.plugin(beautifyUnique)
+userSchema.plugin(passportLocalMongoose);
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 
-export default User
+export default User;
