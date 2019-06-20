@@ -7,6 +7,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -53,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
+                      controller: _emailController,
                     ),
                     SizedBox(height: 20.0),
                     TextField(
@@ -65,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       obscureText: true,
+                      controller: _passwordController,
                     ),
                     SizedBox(height: 5.0),
 //                    Container(
@@ -84,18 +89,18 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 40.0),
                     Container(
                       height: 40.0,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
-                        elevation: 7.0,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BooksHome()));
-                          },
+                      child: GestureDetector(
+                        onTap: () {
+//                          Navigator.push(
+//                              context,
+//                              MaterialPageRoute(
+//                                  builder: (context) => BooksHome()));
+                        },
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20.0),
+                          shadowColor: Colors.greenAccent,
+                          color: Colors.green,
+                          elevation: 7.0,
                           child: Center(
                             child: Text(
                               'LOGIN',
