@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Toko Buku',
       routes: routes,
+      theme: ThemeData(primaryColor: Colors.white),
       home: SplashPage(),
     );
   }

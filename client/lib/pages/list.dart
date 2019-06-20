@@ -8,17 +8,17 @@ class List extends StatelessWidget {
     //app bar
     final appBar = AppBar(
       elevation: .5,
-      leading: IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: () {},
-      ),
-      title: Text('Design Books'),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {},
-        )
-      ],
+//      leading: IconButton(
+//        icon: Icon(Icons.menu),
+//        onPressed: () {},
+//      ),
+      title: Text('All Books'),
+//      actions: <Widget>[
+//        IconButton(
+//          icon: Icon(Icons.search),
+//          onPressed: () {},
+//        )
+//      ],
     );
 
     ///create book tile hero
