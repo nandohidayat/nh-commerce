@@ -80,6 +80,9 @@ flutter:
     - family: lovelo
       fonts:
         - asset: assets/lovelo.ttf
+    - family: Quicksand
+      fonts:
+        - asset: assets/Quicksand-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

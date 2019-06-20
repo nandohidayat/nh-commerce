@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/book.dart';
 import 'detail.dart';
 import 'list.dart';
+import 'cart.dart';
 
 class BooksHome extends StatelessWidget {
   @override
@@ -44,10 +45,16 @@ class CustomTitleBar extends StatelessWidget {
                   fontFamily: "lovelo",
                 )),
           ),
-          Icon(
-            Icons.shopping_cart,
-            size: 30,
-            color: Colors.black,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Cart()));
+            },
+            child: Icon(
+              Icons.shopping_cart,
+              size: 30,
+              color: Colors.black,
+            ),
           )
         ],
       ),
