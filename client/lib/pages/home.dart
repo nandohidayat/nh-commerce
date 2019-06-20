@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/book.dart';
 import 'detail.dart';
+import 'list.dart';
 
 class BooksHome extends StatelessWidget {
   @override
@@ -179,18 +180,29 @@ class HotList extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
-                  Text(
-                    "Show all",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => List()));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Show all",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Icon(
+                          Icons.arrow_right,
+                          size: 15,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
                   ),
-                  Icon(
-                    Icons.arrow_right,
-                    size: 15,
-                    color: Colors.black,
-                  )
                 ],
               )),
           Container(
