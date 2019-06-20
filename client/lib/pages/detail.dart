@@ -44,11 +44,11 @@ class _DetailsState extends State<Details> {
               ),
             ),
             actions: <Widget>[
-              Icon(
-                Icons.file_upload,
-                color: Colors.black87,
-                size: 25,
-              ),
+//              Icon(
+//                Icons.file_upload,
+//                color: Colors.black87,
+//                size: 25,
+//              ),
               SizedBox(width: 25),
               GestureDetector(
                 onTap: () {
@@ -515,18 +515,18 @@ class PriceWidget extends StatelessWidget {
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
-              text: "\$" + widget.bookObject.price.toString(),
+              text: "Rp " + widget.bookObject.price.toString(),
               style: TextStyle(
                   color: Colors.black87,
                   fontFamily: "lovelo",
-                  fontSize: 30,
+                  fontSize: 27,
                   fontWeight: FontWeight.w500)),
           TextSpan(text: "   "),
           TextSpan(
-              text: "\$" + (widget.bookObject.price + 5.45).toString(),
+              text: "Rp " + (widget.bookObject.price + 10000).toString(),
               style: TextStyle(
                   color: Colors.black26,
-                  fontSize: 15,
+                  fontSize: 12,
                   decoration: TextDecoration.lineThrough))
         ]),
       ),

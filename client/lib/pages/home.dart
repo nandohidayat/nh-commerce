@@ -42,6 +42,11 @@ class CustomTitleBar extends StatelessWidget {
                   fontSize: 30,
                   fontFamily: "lovelo",
                 )),
+          ),
+          Icon(
+            Icons.shopping_cart,
+            size: 30,
+            color: Colors.black,
           )
         ],
       ),
@@ -161,15 +166,33 @@ class HotList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(bottom: 20.0),
-            child: Text(
-              "New Book Hot List",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
+              padding: EdgeInsets.only(bottom: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      "New Book Hot List",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Text(
+                    "Show all",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Icon(
+                    Icons.arrow_right,
+                    size: 15,
+                    color: Colors.black,
+                  )
+                ],
+              )),
           Container(
             height: 320,
             child: ListView.builder(
@@ -263,7 +286,7 @@ class ShowBooks extends StatelessWidget {
               SizedBox(
                 height: 12,
               ),
-              Text("\$$price",
+              Text("Rp $price",
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
