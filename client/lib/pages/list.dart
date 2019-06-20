@@ -26,7 +26,7 @@ class List extends StatelessWidget {
           tag: book.title,
           child: Material(
             elevation: 15.0,
-            shadowColor: Colors.yellow.shade900,
+            shadowColor: Colors.white,
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
