@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -89,7 +90,12 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.green,
                         elevation: 7.0,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BooksHome()));
+                          },
                           child: Center(
                             child: Text(
                               'LOGIN',

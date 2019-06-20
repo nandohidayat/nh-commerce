@@ -4,9 +4,9 @@ import 'package:client/pages/splash.dart';
 import 'package:client/pages/login.dart';
 import 'package:client/pages/signup.dart';
 
-var routes = <String, WidgetBuilder> {
+var routes = <String, WidgetBuilder>{
   '/signup': (BuildContext context) => new SignupPage(),
-  '/login': (BuildContext context) => new LoginPage()
+  '/login': (BuildContext context) => new LoginPage(),
 };
 
 void main() => runApp(MyApp());
