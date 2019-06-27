@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:client/models/user.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,6 +11,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +99,23 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       height: 40.0,
                       child: GestureDetector(
-                        onTap: () {
-//                          Navigator.push(
-//                              context,
-//                              MaterialPageRoute(
-//                                  builder: (context) => BooksHome()));
+                        onTap: () async {
+                          int status = await User().login(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+
+                          if (status == 201) {
+                            Toast.show('Login successfull', context);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BooksHome()));
+                          } else {
+                            Toast.show(
+                                'Failed to login. Please try again later',
+                                context);
+                          }
                         },
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),

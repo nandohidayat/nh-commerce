@@ -33,9 +33,11 @@ exports.start = async () => {
   try {
     await connect();
     app.listen(config.port, () => {
+      // eslint-disable-next-line no-console
       console.log(`REST API on http://localhost:${config.port}/api`);
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
   }
 };
