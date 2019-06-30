@@ -14,7 +14,8 @@ class _SplashPageState extends State<SplashPage> {
     // TODO: implement initState
     super.initState();
 
-    Timer(Duration(seconds: 3), () => Navigator.of(context).pushNamed('/login'));
+    Timer(
+        Duration(seconds: 3), () => Navigator.of(context).pushNamed('/login'));
   }
 
   @override
