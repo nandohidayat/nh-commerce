@@ -5,7 +5,6 @@ const config = require('../config');
 
 exports.signup = async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    console.log(req.body);
     return res.status(400).send({ message: 'need email and password' });
   }
 
@@ -21,7 +20,6 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = async (req, res) => {
-  console.log(req.body);
   if (!req.body.email || !req.body.password) {
     return res.status(400).send({ message: 'need email and password' });
   }
