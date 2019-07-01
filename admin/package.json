@@ -1,9 +1,9 @@
 {
     "name": "node-commerce",
     "version": "1.0.0",
-    "author": "Yassine belkaid",
-    "email": "yassine.belkaid87@gmail.com",
-    "description": "Node and React e-commerce project",
+    "author": "Nando Hidayat",
+    "email": "mnandohidayat@gmail.com",
+    "description": "e-commerce project",
     "main": "index.js",
     "scripts": {
         "test": "jest --watch",
