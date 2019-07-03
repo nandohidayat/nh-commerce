@@ -7,12 +7,12 @@
 
         <form action="/profile?_method=PUT" method="POST" id="profile-form">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <input type="text" id="firstname" class="fadeIn second" name="firstname" 
-                placeholder="First name" value="<%= currentUser.firstname %>" required />
-            <input type="text" id="lastname" class="fadeIn second" name="lastname" 
-                placeholder="Last name" value="<%= currentUser.lastname %>" required />
-            <input type="text" id="email" class="fadeIn third" name="email" 
+            <input type="text" id="email" class="fadeIn second" name="email" 
                 placeholder="Email address" value="<%= currentUser.email %>" required />
+            <input type="text" id="name" class="fadeIn second" name="name" 
+                placeholder="Full name" value="<%= currentUser.name %>" required />
+            <input type="text" id="phone" class="fadeIn third" name="phone" 
+                placeholder="Phone" value="<%= currentUser.phone %>" required />
             <input type="password" id="password" class="fadeIn third" name="password" 
                 placeholder="Password"  />
             <input type="submit" class="fadeIn fourth" value="Update" />

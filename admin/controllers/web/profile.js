@@ -6,27 +6,24 @@ const PROFILE_ROUTE_MAIM = '/profile';
 const PASSWORD_MIN_VALUE = 4;
 
 export default class Profile {
-    static profile (req, res) {
+    static profile(req, res) {
         res.render('profile/index', {
             title: 'Edit profile',
             currentUser: req.session.user,
-            currentPath: req.baseUrl
+            currentPath: req.baseUrl,
         });
     }
 
-    static async updateProfile (req, res) {
-        const { firstname, lastname, email, password } = req.body;
+    static async updateProfile(req, res) {
+        const { email, name, phone, password } = req.body;
         const lengthRange = { min: 4, max: 30 };
 
         // validate fields
-        if (validator.isEmpty(firstname) || !validator.isAlpha(firstname) ||
-            !validator.isLength(firstname, lengthRange)) {
-            req.flash('error', 'Invalid first name');
-            res.redirect(PROFILE_ROUTE_MAIM);
-        }
-
-        if (validator.isEmpty(lastname) || !validator.isAlpha(lastname) ||
-            !validator.isLength(lastname, lengthRange)) {
+        if (
+            validator.isEmpty(name) ||
+            !validator.isAlpha(name) ||
+            !validator.isLength(name, lengthRange)
+        ) {
             req.flash('error', 'Invalid last name');
             res.redirect(PROFILE_ROUTE_MAIM);
         }
@@ -37,7 +34,9 @@ export default class Profile {
         }
 
         try {
-            const userObj = await UserModel.findOne({ _id: req.session.user._id });
+            const userObj = await UserModel.findOne({
+                _id: req.session.user._id,
+            });
 
             // update password only if provided
             if (password.length > PASSWORD_MIN_VALUE) {
@@ -51,8 +50,8 @@ export default class Profile {
                 }
             }
 
-            userObj.firstname = firstname;
-            userObj.lastname = lastname;
+            userObj.name = name;
+            userObj.phone = phone;
             userObj.email = email;
 
             const updatedUser = await userObj.save();
@@ -66,7 +65,10 @@ export default class Profile {
                         throw new Error(err);
                     }
 
-                    req.flash('success', 'Your profile has been successfully updated!');
+                    req.flash(
+                        'success',
+                        'Your profile has been successfully updated!'
+                    );
                     res.redirect(PROFILE_ROUTE_MAIM);
                 });
             }

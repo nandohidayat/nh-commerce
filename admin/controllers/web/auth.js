@@ -6,19 +6,23 @@ const AUTH_ROUTE_LOGIN = '/auth/login';
 const AUTH_ROUTE_SIGNUP = '/auth/signup';
 
 export default class Auth {
-    static login (req, res) {
+    static login(req, res) {
         res.render('auth/login', {
             title: 'Login',
             currentPath: req.baseUrl,
-            signup: false
+            signup: false,
         });
     }
 
-    static async postLogin (req, res) {
+    static async postLogin(req, res) {
         const { email, password } = req.body;
         // validate email|password
-        if (!validator.isEmail(email) || validator.isEmpty(email) ||
-            validator.isEmpty(password) || !password.match(/^[a-zA-Z0-9]{4,30}$/)) {
+        if (
+            !validator.isEmail(email) ||
+            validator.isEmpty(email) ||
+            validator.isEmpty(password) ||
+            !password.match(/^[a-zA-Z0-9]{4,30}$/)
+        ) {
             req.flash('error', 'Please enter a valid email & password');
             res.redirect(AUTH_ROUTE_LOGIN);
         }
@@ -32,7 +36,10 @@ export default class Auth {
             }
 
             try {
-                const passwordMatched = await bcrypt.compare(password, user.password);
+                const passwordMatched = await bcrypt.compare(
+                    password,
+                    user.password
+                );
 
                 if (passwordMatched) {
                     req.session.isLoggedIn = true;
@@ -44,7 +51,10 @@ export default class Auth {
                             throw new Error(err);
                         }
 
-                        req.flash('success', 'You have been successfully logged in.');
+                        req.flash(
+                            'success',
+                            'You have been successfully logged in.'
+                        );
                         res.redirect('/');
                     });
                 }
@@ -61,27 +71,24 @@ export default class Auth {
         }
     }
 
-    static signup (req, res) {
+    static signup(req, res) {
         res.render('auth/login', {
             title: 'Signup',
             currentPath: req.baseUrl,
-            signup: true
+            signup: true,
         });
     }
 
-    static async postSignup (req, res) {
-        const { firstname, lastname, email, password } = req.body;
+    static async postSignup(req, res) {
+        const { email, name, phone, password } = req.body;
         const lengthRange = { min: 4, max: 30 };
 
         // validate fields
-        if (validator.isEmpty(firstname) || !validator.isAlpha(firstname) ||
-            !validator.isLength(firstname, lengthRange)) {
-            req.flash('error', 'Invalid first name');
-            res.redirect(AUTH_ROUTE_SIGNUP);
-        }
-
-        if (validator.isEmpty(lastname) || !validator.isAlpha(lastname) ||
-            !validator.isLength(lastname, lengthRange)) {
+        if (
+            validator.isEmpty(name) ||
+            !validator.isAlpha(name) ||
+            !validator.isLength(name, lengthRange)
+        ) {
             req.flash('error', 'Invalid last name');
             res.redirect(AUTH_ROUTE_SIGNUP);
         }
@@ -91,7 +98,10 @@ export default class Auth {
             res.redirect(AUTH_ROUTE_SIGNUP);
         }
 
-        if (validator.isEmpty(password) || !password.match(/^[a-zA-Z0-9]{4,30}$/)) {
+        if (
+            validator.isEmpty(password) ||
+            !password.match(/^[a-zA-Z0-9]{4,30}$/)
+        ) {
             req.flash('error', 'Invalid password');
             res.redirect(AUTH_ROUTE_SIGNUP);
         }
@@ -108,10 +118,10 @@ export default class Auth {
                 const genSalt = await bcrypt.genSalt(10);
                 const hash = await bcrypt.hash(password, genSalt);
                 const userObj = new UserModel({
-                    firstname,
-                    lastname,
                     email,
-                    password: hash
+                    name,
+                    phone,
+                    password: hash,
                 });
 
                 const savedUser = await userObj.save();
@@ -142,7 +152,7 @@ export default class Auth {
         }
     }
 
-    static logout (req, res) {
+    static logout(req, res) {
         return req.session.destroy(err => {
             if (err) {
                 throw new Error(err);
