@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:client/pages/splash.dart';
-import 'package:client/pages/login.dart';
-import 'package:client/pages/signup.dart';
+import 'package:client/screens/splash.dart';
+import 'package:client/screens/login.dart';
+import 'package:client/screens/signup.dart';
 
 var routes = <String, WidgetBuilder>{
   '/signup': (BuildContext context) => new SignupPage(),

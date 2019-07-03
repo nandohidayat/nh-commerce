@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:client/pages/signup.dart';
+import 'package:client/screens/signup.dart';
+import 'package:client/screens/navigator.dart';
+import 'package:client/services/user.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Text('Email'),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -60,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Text('Kata Sandi'),
             TextField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
@@ -77,6 +82,24 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Expanded(
                   child: OutlineButton(
+                    onPressed: () async {
+                      bool status = await User().login(
+                          email: _emailController.text,
+                          password: _passwordController.text);
+                      if (status) {
+                        Toast.show('Welcome back :)', context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NavigatorPage(),
+                          ),
+                        );
+                      } else {
+                        Toast.show('email or password missmatch', context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      }
+                    },
                     padding: EdgeInsets.all(0),
                     child: Container(
                       decoration: BoxDecoration(

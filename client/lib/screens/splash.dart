@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:client/pages/login.dart';
-import 'package:client/pages/signup.dart';
+import 'package:client/screens/login.dart';
+import 'package:client/screens/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:client/screens/navigator.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -22,12 +24,24 @@ class _SplashPageState extends State<SplashPage> {
 //        Duration(seconds: 3), () => Navigator.of(context).pushNamed('/login'));
     Timer(
       Duration(seconds: 3),
-      () {
-        setState(
-          () {
-            showButton = true;
-          },
-        );
+      () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String token = prefs.get('token') ?? '';
+
+        if (token.length > 0) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NavigatorPage(),
+            ),
+          );
+        } else {
+          setState(
+            () {
+              showButton = true;
+            },
+          );
+        }
       },
     );
   }
