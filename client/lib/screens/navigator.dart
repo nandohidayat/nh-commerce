@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/screens/profile.dart';
+import 'package:client/screens/list.dart';
 
 class NavigatorPage extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetOptions = <Widget>[
+    ListPage(),
     Text('Hai'),
-    Text('Hoi'),
     ProfilePage(),
   ];
 

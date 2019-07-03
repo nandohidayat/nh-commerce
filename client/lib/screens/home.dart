@@ -132,8 +132,8 @@ class ShowCase extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Details(bookObject)));
+//        Navigator.push(context,
+//            MaterialPageRoute(builder: (context) => Details(bookObject)));
       },
       child: Row(
         children: <Widget>[
@@ -189,8 +189,8 @@ class HotList extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => List()));
+//                      Navigator.push(context,
+//                          MaterialPageRoute(builder: (context) => List()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -260,8 +260,8 @@ class ShowBooks extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Details(bookObject)));
+//        Navigator.push(context,
+//            MaterialPageRoute(builder: (context) => Details(bookObject)));
       },
       child: Row(
         children: <Widget>[
