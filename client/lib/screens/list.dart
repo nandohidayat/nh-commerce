@@ -65,6 +65,7 @@ class ProductList extends StatelessWidget {
             price: products[index].price,
             description: products[index].description,
             quantity: products[index].quantity,
+            category: products[index].category,
           );
         },
       ),
@@ -78,6 +79,7 @@ class ProductCard extends StatelessWidget {
   final double price;
   final String description;
   final int quantity;
+  final String category;
   final format = new NumberFormat.simpleCurrency(
     locale: 'ID',
     decimalDigits: 0,
@@ -89,6 +91,7 @@ class ProductCard extends StatelessWidget {
     this.price,
     this.description,
     this.quantity,
+    this.category,
   });
 
   @override
@@ -106,6 +109,7 @@ class ProductCard extends StatelessWidget {
                   description: description,
                   price: price,
                   quantity: quantity,
+                  category: category,
                 ),
           ),
         );
