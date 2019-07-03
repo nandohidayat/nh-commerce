@@ -10,6 +10,7 @@ import flash from 'connect-flash';
 import connectMongodbSession from 'connect-mongodb-session';
 import cors from 'cors';
 import helmet from 'helmet';
+import morgan from 'morgan';
 // Middlewares
 import {
     LocalsMiddleware,
@@ -45,6 +46,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(helmet());
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());

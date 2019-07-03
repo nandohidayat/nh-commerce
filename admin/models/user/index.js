@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mongooseTimestamp from 'mongoose-timestamp';
+mongoose.Promise = global.Promise;
 
 const Schema = mongoose.Schema;
 const userSchema = new Schema({

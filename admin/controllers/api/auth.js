@@ -73,7 +73,6 @@ export default class Auth {
             const user = await UserModel.findOne({ email });
 
             if (user) {
-                req.flash('error', 'Invalid email.');
                 return res.status(401).json({ error: 'Something went wrong.' });
             }
 
@@ -90,7 +89,7 @@ export default class Auth {
                 const savedUser = await userObj.save();
 
                 if (savedUser) {
-                    res.status(200).json({ status: 'success' });
+                    return res.status(200).json({ status: 'success' });
                 }
 
                 return res.status(401).json({ error: 'Something went wrong.' });
