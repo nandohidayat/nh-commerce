@@ -87,14 +87,14 @@ class _LoginPageState extends State<LoginPage> {
                           email: _emailController.text,
                           password: _passwordController.text);
                       if (status) {
-                        Toast.show('Welcome back :)', context,
-                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NavigatorPage(),
-                          ),
-                        );
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NavigatorPage(
+                                    fromLogin: true,
+                                  ),
+                            ),
+                            (Route<dynamic> route) => false);
                       } else {
                         Toast.show('email or password missmatch', context,
                             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);

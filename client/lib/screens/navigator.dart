@@ -4,6 +4,10 @@ import 'package:client/screens/profile.dart';
 class NavigatorPage extends StatefulWidget {
   @override
   _NavigatorPageState createState() => _NavigatorPageState();
+
+  NavigatorPage({this.fromLogin});
+
+  final bool fromLogin;
 }
 
 class _NavigatorPageState extends State<NavigatorPage> {

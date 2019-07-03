@@ -1,2 +1,2 @@
 const ktitle = 'Toko Buku Bu Ratna';
-const kurl = 'https://buratna.serveo.net';
+const kurl = 'https://buratna.localtunnel.me';

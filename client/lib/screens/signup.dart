@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:client/services/user.dart';
+import 'package:toast/toast.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -7,8 +9,9 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController email = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController phone = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final TextEditingController username = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class _SignupPageState extends State<SignupPage> {
           children: <Widget>[
             Text('Email'),
             TextField(
+              controller: email,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -40,6 +44,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             Text('Nama Lengkap'),
             TextField(
+              controller: name,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -54,6 +59,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             Text('Nomor Ponsel'),
             TextField(
+              controller: phone,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -68,6 +74,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             Text('Kata Sandi'),
             TextField(
+              controller: password,
               obscureText: true,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
@@ -104,7 +111,26 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      bool status = await User().signup(
+                        email: email.text,
+                        name: name.text,
+                        phone: phone.text,
+                        password: password.text,
+                      );
+                      if (status) {
+                        Toast.show(
+                          'Registrasi berhasil..',
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.BOTTOM,
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        Toast.show('Something went wrong', context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      }
+                    },
                   ),
                 ),
               ],
