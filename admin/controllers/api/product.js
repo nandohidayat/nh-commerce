@@ -6,9 +6,9 @@ import { productsPresenter, productPresenter } from '../../utils/presenter';
 export default class Product {
     static async all(req, res) {
         try {
-            const products = await ProductModel.find({}).sort([
-                ['createdAt', -1],
-            ]);
+            const products = await ProductModel.find({})
+                .populate('category')
+                .sort([['createdAt', -1]]);
             const updatedProducts = productsPresenter(products);
             res.status(200).json({ data: updatedProducts });
         } catch (err) {

@@ -8,7 +8,11 @@ const ProductSchema = new Schema({
     image: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
     price: { type: Number, required: true },
-    category: { type: mongoose.Types.ObjectId, required: true }
+    category: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'Category',
+    },
 });
 
 // add timestamp plugin
