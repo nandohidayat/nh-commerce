@@ -12,7 +12,7 @@ class NetworkHelper {
       String data = response.body;
       return jsonDecode(data);
     } else {
-      print(response.statusCode);
+      return 404;
     }
   }
 
