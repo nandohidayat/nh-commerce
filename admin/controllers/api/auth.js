@@ -24,10 +24,7 @@ export default class Auth {
 
             const token = jwt.sign(
                 {
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    email: user.email,
-                    userId: user._id.toString(),
+                    id: user._id.toString(),
                 },
                 process.env.JWT_SECRET,
                 { expiresIn: '1d' }
@@ -98,6 +95,85 @@ export default class Auth {
             }
         } catch (err) {
             res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async protect(req, res, next) {
+        const bearer = req.headers.authorization;
+
+        if (!bearer || !bearer.startsWith('Bearer ')) {
+            return res.status(401).end();
+        }
+
+        const token = bearer.split('Bearer ')[1].trim();
+        let payload;
+        try {
+            payload = await jwt.verify(token, process.env.JWT_SECRET);
+        } catch (e) {
+            return res.status(401).end();
+        }
+
+        const user = await UserModel.findById(payload.id)
+            .select('-password')
+            .lean()
+            .exec();
+
+        if (!user) {
+            return res.status(401).end();
+        }
+
+        req.user = user;
+        next();
+    }
+
+    static async addToCart(req, res) {
+        const { product, quantity } = req.body;
+
+        try {
+            const user = await UserModel.findById(req.user._id);
+
+            if (!user) {
+                return res.status(401).json({ error: 'Something went wrong.' });
+            }
+
+            let found = false;
+            for (let i = 0; i < user.cart.length; i++) {
+                if (user.cart[i].product == product) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                return res.status(401).json({ error: 'Something went wrong.' });
+            }
+
+            user.cart.push({ product, quantity });
+            const saved = user.save();
+
+            if (saved) {
+                return res.status(200).json({ status: 'success' });
+            } else {
+                return res.status(500).json({ error: 'something went wrong' });
+            }
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async getCart(req, res) {
+        try {
+            const user = await UserModel.findById(req.user._id).populate(
+                'cart.product'
+            );
+
+            if (user) {
+                return res.status(200).json({ data: user.cart });
+            }
+
+            return res.status(500).json({ error: 'something went wrong' });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
         }
     }
 }

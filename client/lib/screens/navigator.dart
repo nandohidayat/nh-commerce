@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:client/screens/profile.dart';
 import 'package:client/screens/list.dart';
+import 'package:client/screens/cart.dart';
 
 class NavigatorPage extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   List<Widget> _widgetOptions = <Widget>[
     ListPage(),
-    Text('Hai'),
+    CartPage(),
     ProfilePage(),
   ];
 

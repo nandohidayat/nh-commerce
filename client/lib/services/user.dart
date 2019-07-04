@@ -34,4 +34,24 @@ class User {
       return true;
     }
   }
+
+  Future<bool> addToCart({String product, int quantity}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.get('token');
+
+    NetworkHelper networkHelper = NetworkHelper(url: '$kurl/api/auth/cart');
+    var data = await networkHelper.postData(
+      object: {
+        'product': product,
+        'quantity': quantity.toString(),
+      },
+      token: token,
+    );
+
+    if (data == 404) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

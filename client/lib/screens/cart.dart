@@ -1,289 +1,252 @@
 import 'package:flutter/material.dart';
-import '../services/book.dart';
+import 'package:http/http.dart';
 
-class Cart extends StatefulWidget {
-  @override
-  _CartState createState() => _CartState();
-}
+import 'package:client/services/cart.dart';
+import 'package:client/utilities/constant.dart';
+import 'package:intl/intl.dart';
 
-class _CartState extends State<Cart> {
-  List picked = [false, false];
-
-  double totalAmount = 0;
-
-  pickToggle(index, price) {
-    setState(() {
-      picked[index] = !picked[index];
-      getTotalAmount(price);
-    });
-  }
-
-  getTotalAmount(price) {
-    var count = 0;
-    for (int i = 0; i < picked.length; i++) {
-      if (picked[i]) {
-        count = count + 1;
-      }
-      if (i == picked.length - 1) {
-        setState(() {
-          totalAmount = price * count;
-        });
-      }
-    }
-  }
-
+class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(shrinkWrap: true, children: <Widget>[
-          Column(
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 15,
+            ),
+            Text('Keranjang'),
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: FutureBuilder<List<Cart>>(
+              future: fetchCarts(Client()),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                return snapshot.hasData
+                    ? CartList(
+                        carts: snapshot.data,
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      );
+              },
+            ),
+          ),
+          TotalPrice(),
+        ],
+      ),
+    );
+  }
+}
+
+class CartList extends StatefulWidget {
+  final List<Cart> carts;
+
+  CartList({this.carts});
+
+  @override
+  _CartListState createState() => _CartListState();
+}
+
+class _CartListState extends State<CartList> {
+  List<int> quantities = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: ListView(
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: _buildList(widget.carts),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildList(List<Cart> carts) {
+    List<Widget> lists = [];
+    for (var i = 0; i < carts.length; i++) {
+      quantities.add(carts[i].quantity);
+      lists.add(_buildRow(carts[i], quantities, i));
+      lists.add(Divider());
+    }
+    return lists;
+  }
+
+  Widget _buildRow(Cart cart, List<int> quantities, int i) {
+    int quantity = quantities[i];
+    var format = new NumberFormat.simpleCurrency(
+      locale: 'ID',
+      decimalDigits: 0,
+    );
+    TextEditingController _quantity =
+        TextEditingController(text: quantity.toString());
+
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 10,
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Stack(children: [
-                  Stack(children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: double.infinity,
-                    ),
-                    Container(
-                      height: 250.0,
-                      width: double.infinity,
-                      color: Colors.green,
-                    ),
-                    Positioned(
-                      bottom: 450.0,
-                      right: 100.0,
-                      child: Container(
-                        height: 400.0,
-                        width: 400.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(200.0),
-                          color: Colors.greenAccent,
+                SizedBox(
+                  width: 20,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    '$kurl/images/products/${cart.image}',
+                    height: 60,
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '${cart.name}'.toUpperCase(),
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        '${format.format(cart.price)}',
+                        style: TextStyle(
+                          color: Colors.red,
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 500.0,
-                      left: 150.0,
-                      child: Container(
-                          height: 300.0,
-                          width: 300.0,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(150.0),
-                              color: Colors.greenAccent.withOpacity(0.5))),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15.0),
-                      child: IconButton(
-                          alignment: Alignment.topLeft,
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
-                    Positioned(
-                        top: 75.0,
-                        left: 15.0,
-                        child: Text(
-                          'Shopping Cart',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold),
-                        )),
-                    Positioned(
-                      top: 150.0,
-                      child: Column(
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          itemCard(
-                              booklist.books[0].title,
-                              'gray',
-                              booklist.books[0].price,
-                              booklist.books[0].cover,
-                              true,
-                              0),
-                          itemCard(
-                              booklist.books[1].title,
-                              'gray',
-                              booklist.books[1].price,
-                              booklist.books[1].cover,
-                              true,
-                              1),
-                          itemCard(
-                              booklist.books[2].title,
-                              'gray',
-                              booklist.books[2].price,
-                              booklist.books[2].cover,
-                              false,
-                              2)
+                          SizedBox(
+                            width: 20,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.remove_circle_outline),
+                            onPressed: () {
+                              setState(() {
+                                quantities[i] = quantities[i] - 1;
+                              });
+                            },
+                            iconSize: 35,
+                            color: Colors.green.shade400,
+                          ),
+                          Container(
+                            width: 50,
+                            child: TextField(
+                              controller: _quantity,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                quantities[i] = int.parse(value);
+                              },
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add_circle_outline),
+                            onPressed: () {
+                              setState(() {
+                                quantities[i] = quantities[i] + 1;
+                              });
+                            },
+                            iconSize: 35,
+                            color: Colors.green.shade400,
+                          ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 600.0, bottom: 15.0),
-                    )
-                  ])
-                ])
-              ])
-        ]),
-        bottomNavigationBar: Material(
-          elevation: 7.0,
-          color: Colors.white,
-          child: Container(
-              height: 50.0,
-              width: double.infinity,
-              color: Colors.white,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TotalPrice extends StatefulWidget {
+  @override
+  _TotalPriceState createState() => _TotalPriceState();
+}
+
+class _TotalPriceState extends State<TotalPrice> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 15,
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text('Total: Rp ' + totalAmount.toString()),
-                  SizedBox(width: 10.0),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      onPressed: () {},
-                      elevation: 0.5,
-                      color: Colors.red,
-                      child: Center(
-                        child: Text(
-                          'Pay Now',
-                        ),
-                      ),
-                      textColor: Colors.white,
+                  Text(
+                    'Total Harga',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
                     ),
                   )
                 ],
-              )),
-        ));
-  }
-
-  Widget itemCard(itemName, color, price, imgPath, available, i) {
-    itemName =
-        itemName.length > 17 ? itemName.substring(0, 15) + "..." : itemName;
-
-    return InkWell(
-      onTap: () {
-        if (available) {
-          pickToggle(i, price);
-        }
-      },
-      child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Material(
-              borderRadius: BorderRadius.circular(10.0),
-              elevation: 3.0,
-              child: Container(
-                  padding: EdgeInsets.only(left: 15.0, right: 10.0),
-                  width: MediaQuery.of(context).size.width - 20.0,
-                  height: 150.0,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: OutlineButton(
+                onPressed: () {},
+                padding: EdgeInsets.all(0),
+                child: Container(
+                  height: 40,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Row(
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              height: 25.0,
-                              width: 25.0,
-                              decoration: BoxDecoration(
-                                color: available
-                                    ? Colors.grey.withOpacity(0.4)
-                                    : Colors.red.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(12.5),
-                              ),
-                              child: Center(
-                                  child: available
-                                      ? Container(
-                                          height: 12.0,
-                                          width: 12.0,
-                                          decoration: BoxDecoration(
-                                              color: picked[i]
-                                                  ? Colors.yellow
-                                                  : Colors.grey
-                                                      .withOpacity(0.4),
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0)),
-                                        )
-                                      : Container()))
-                        ],
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.black),
+                  padding: EdgeInsets.all(
+                    10,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Beli',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
                       ),
-                      SizedBox(width: 10.0),
-                      Container(
-                        height: 150.0,
-                        width: 125.0,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: new NetworkImage(
-                                  imgPath,
-                                ),
-                                fit: BoxFit.contain)),
-                      ),
-                      SizedBox(width: 4.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                itemName,
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0),
-                              ),
-                              SizedBox(width: 7.0),
-                              available
-                                  ? picked[i]
-                                      ? Text(
-                                          'x1',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14.0,
-                                              color: Colors.grey),
-                                        )
-                                      : Container()
-                                  : Container()
-                            ],
-                          ),
-                          SizedBox(height: 7.0),
-                          available
-                              ? SizedBox(
-                                  width: 10,
-                                )
-                              : OutlineButton(
-                                  onPressed: () {},
-                                  borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                      style: BorderStyle.solid),
-                                  child: Center(
-                                    child: Text('Find Similar',
-                                        style: TextStyle(
-                                            fontFamily: 'Quicksand',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.0,
-                                            color: Colors.red)),
-                                  ),
-                                ),
-                          SizedBox(height: 7.0),
-                          available
-                              ? Text(
-                                  'Rp ' + price.toString(),
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                      color: Colors.green),
-                                )
-                              : Container(),
-                        ],
-                      )
-                    ],
-                  )))),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

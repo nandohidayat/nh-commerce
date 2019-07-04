@@ -8,6 +8,12 @@ const userSchema = new Schema({
     name: { type: String, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
+    cart: [
+        {
+            product: { type: mongoose.Types.ObjectId, ref: 'Product' },
+            quantity: { type: Number },
+        },
+    ],
 });
 
 // Add some method as necessary

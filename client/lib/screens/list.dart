@@ -60,6 +60,7 @@ class ProductList extends StatelessWidget {
         products.length,
         (index) {
           return ProductCard(
+            id: products[index].id,
             image: products[index].image,
             name: products[index].name,
             price: products[index].price,
@@ -74,6 +75,7 @@ class ProductList extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
+  final String id;
   final String image;
   final String name;
   final double price;
@@ -86,6 +88,7 @@ class ProductCard extends StatelessWidget {
   );
 
   ProductCard({
+    this.id,
     this.image,
     this.name,
     this.price,
@@ -104,6 +107,7 @@ class ProductCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => DetailPage(
+                  id: id,
                   image: image,
                   name: name,
                   description: description,

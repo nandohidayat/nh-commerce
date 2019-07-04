@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:toast/toast.dart';
+
 import 'package:client/utilities/constant.dart';
+import 'package:client/services/user.dart';
 
 class DetailPage extends StatelessWidget {
+  final String id;
   final String image;
   final String name;
   final double price;
@@ -15,6 +19,7 @@ class DetailPage extends StatelessWidget {
   );
 
   DetailPage({
+    this.id,
     this.image,
     this.name,
     this.price,
@@ -176,7 +181,18 @@ class DetailPage extends StatelessWidget {
                 Expanded(
                   flex: 4,
                   child: OutlineButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      bool status =
+                          await User().addToCart(product: id, quantity: 1);
+
+                      if (status) {
+                        Toast.show('Berhasil menambah ke kerenjang..', context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      } else {
+                        Toast.show('Something went wrong..', context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      }
+                    },
                     padding: EdgeInsets.all(0),
                     child: Container(
                       height: 40,

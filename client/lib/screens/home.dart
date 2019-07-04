@@ -47,8 +47,8 @@ class CustomTitleBar extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Cart()));
+//              Navigator.push(
+//                  context, MaterialPageRoute(builder: (context) => Cart()));
             },
             child: Icon(
               Icons.shopping_cart,

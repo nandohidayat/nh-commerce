@@ -16,8 +16,9 @@ class NetworkHelper {
     }
   }
 
-  Future postData({Object object}) async {
-    Response response = await post(url, body: object);
+  Future postData({Object object, String token = ''}) async {
+    Response response = await post(url,
+        body: object, headers: {'authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       String data = response.body;
       return jsonDecode(data);
