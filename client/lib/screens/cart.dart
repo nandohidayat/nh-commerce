@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 import 'package:client/services/cart.dart';
+import 'package:client/screens/payment.dart';
 import 'package:client/utilities/constant.dart';
-import 'package:intl/intl.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -115,7 +116,14 @@ class _CartListState extends State<CartList> {
                 Expanded(
                   flex: 1,
                   child: OutlineButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentPage(),
+                        ),
+                      );
+                    },
                     padding: EdgeInsets.all(0),
                     child: Container(
                       height: 40,
@@ -232,7 +240,9 @@ class _CartListState extends State<CartList> {
                               controller: _quantity,
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                quantities[i] = int.parse(value);
+                                setState(() {
+                                  quantities[i] = int.parse(value);
+                                });
                               },
                             ),
                           ),
