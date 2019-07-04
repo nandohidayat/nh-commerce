@@ -21,25 +21,18 @@ class CartPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: FutureBuilder<List<Cart>>(
-              future: fetchCarts(Client()),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
-                return snapshot.hasData
-                    ? CartList(
-                        carts: snapshot.data,
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      );
-              },
-            ),
-          ),
-          TotalPrice(),
-        ],
+      body: FutureBuilder<List<Cart>>(
+        future: fetchCarts(Client()),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          return snapshot.hasData
+              ? CartList(
+                  carts: snapshot.data,
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        },
       ),
     );
   }
@@ -56,21 +49,100 @@ class CartList extends StatefulWidget {
 
 class _CartListState extends State<CartList> {
   List<int> quantities = [];
+  var format = new NumberFormat.simpleCurrency(
+    locale: 'ID',
+    decimalDigits: 0,
+  );
+
+  int getTotal() {
+    int sum = 0;
+    for (int i = 0; i < widget.carts.length; i++) {
+      sum += (widget.carts[i].price * quantities[i]).round();
+    }
+    return sum;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: ListView(
-        children: <Widget>[
-          Container(
-            color: Colors.white,
-            child: Column(
-              children: _buildList(widget.carts),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: _buildList(widget.carts),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 15,
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Total Harga',
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        '${format.format(getTotal())}',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: OutlineButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.all(0),
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black),
+                      padding: EdgeInsets.all(
+                        10,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Beli',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -180,69 +252,6 @@ class _CartListState extends State<CartList> {
                   ),
                 ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TotalPrice extends StatefulWidget {
-  @override
-  _TotalPriceState createState() => _TotalPriceState();
-}
-
-class _TotalPriceState extends State<TotalPrice> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 15,
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    'Total Harga',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: OutlineButton(
-                onPressed: () {},
-                padding: EdgeInsets.all(0),
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.black),
-                  padding: EdgeInsets.all(
-                    10,
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Beli',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
