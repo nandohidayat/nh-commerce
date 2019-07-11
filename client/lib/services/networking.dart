@@ -26,4 +26,15 @@ class NetworkHelper {
       return 404;
     }
   }
+
+  Future deleteData({String token = ''}) async {
+    Response response =
+        await delete(url, headers: {'authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      String data = response.body;
+      return jsonDecode(data);
+    } else {
+      return 404;
+    }
+  }
 }

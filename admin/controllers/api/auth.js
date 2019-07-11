@@ -176,4 +176,20 @@ export default class Auth {
             return res.status(500).json({ error: err.message });
         }
     }
+
+    static async deleteCart(req, res) {
+        try {
+            const user = await UserModel.update(
+                { _id: req.user._id },
+                { $pull: { cart: { _id: req.params.id } } }
+            );
+            if (user) {
+                return res.status(200).json({ status: 'success' });
+            }
+
+            return res.status(500).json({ error: 'something went wrong' });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    }
 }

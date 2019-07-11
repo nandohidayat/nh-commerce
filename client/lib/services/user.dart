@@ -54,4 +54,20 @@ class User {
       return true;
     }
   }
+
+  Future<bool> deleteCart({String id}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.get('token');
+
+    NetworkHelper networkHelper = NetworkHelper(url: '$kurl/api/auth/cart/$id');
+    var data = await networkHelper.deleteData(
+      token: token,
+    );
+
+    if (data == 404) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

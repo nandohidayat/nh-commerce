@@ -3,7 +3,9 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 import 'package:client/services/cart.dart';
+import 'package:client/services/user.dart';
 import 'package:client/screens/payment.dart';
+import 'package:client/screens/shipping.dart';
 import 'package:client/utilities/constant.dart';
 
 class CartPage extends StatelessWidget {
@@ -120,7 +122,11 @@ class _CartListState extends State<CartList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PaymentPage(),
+                          builder: (context) => ShippingPage(
+                                carts: widget.carts,
+                                quantities: quantities,
+                                total: getTotal(),
+                              ),
                         ),
                       );
                     },
@@ -158,20 +164,19 @@ class _CartListState extends State<CartList> {
     List<Widget> lists = [];
     for (var i = 0; i < carts.length; i++) {
       quantities.add(carts[i].quantity);
-      lists.add(_buildRow(carts[i], quantities, i));
+      lists.add(_buildRow(carts[i], i));
       lists.add(Divider());
     }
     return lists;
   }
 
-  Widget _buildRow(Cart cart, List<int> quantities, int i) {
-    int quantity = quantities[i];
+  Widget _buildRow(Cart cart, int i) {
     var format = new NumberFormat.simpleCurrency(
       locale: 'ID',
       decimalDigits: 0,
     );
     TextEditingController _quantity =
-        TextEditingController(text: quantity.toString());
+        TextEditingController(text: quantities[i].toString());
 
     return Container(
       child: Padding(
@@ -183,6 +188,7 @@ class _CartListState extends State<CartList> {
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
                   width: 20,
@@ -198,7 +204,7 @@ class _CartListState extends State<CartList> {
                   width: 15,
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -260,6 +266,18 @@ class _CartListState extends State<CartList> {
                       ),
                     ],
                   ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    bool status = await User().deleteCart(id: cart.id);
+                    if (status) {
+                      setState(() {
+                        widget.carts.remove(cart);
+                      });
+                    }
+                  },
+                  iconSize: 20,
                 ),
               ],
             ),
