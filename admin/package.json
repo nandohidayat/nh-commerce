@@ -9,7 +9,8 @@
         "test": "jest --watch",
         "test:coverage": "jest --coverage",
         "lint": "eslint ./",
-        "start": "nodemon --exec babel-node index.js"
+        "dev": "nodemon --exec babel-node index.js",
+        "start": "node index.js"
     },
     "engines": {
         "node": "10.15.3"
